@@ -43,5 +43,9 @@
         <value>/hadoop_env/datanode/store</value>
     </property>
 
+    <property>
+        <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
+        <value>false</value>
+    </property>
 
 </configuration>

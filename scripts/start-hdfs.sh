@@ -11,3 +11,8 @@ $HADOOP_HOME/bin/hdfs datanode #Start the datanode.
 #--------- Start HDFS use only one script --------#
 $HADOOP_HOME/sbin/start-dfs.sh
 #--------- Start HDFS use only one script --------#
+
+#--------- Check if HAFS can work -----------#
+./hdfs dfs -mkdir /hello_hdfs
+./hdfs dfs -ls /
+#--------- Check if HAFS can work -----------#
