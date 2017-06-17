@@ -21,7 +21,11 @@
         <value>false</value>
     </property>
 
-    yarn.admin.acl
+    <property>
+        <name>yarn.admin.acl</name>
+        <value>*</value>
+    </property>
+    
     <property>
         <name>yarn.log-aggregation-enable</name>
         <value>false</value>

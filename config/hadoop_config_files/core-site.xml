@@ -19,7 +19,7 @@
 <configuration>
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://10.141.33.90:port?</value>
+        <value>hdfs://10.141.33.90</value>
     </property>
     <property>
         <name>io.file.buffer.size</name>
