@@ -7,7 +7,7 @@ Flume + Hive + ElasticSearch
 
 ## Goal
 * Learn Hadoop: Know the work flow of Hadoop.  [TODO]
-* The original problem: Flume -> Hive -> ElasticSerach [Undone] Requiremnets: ![poc/requirements.md](poc/requirements.md "Requirements")
+* The original problem: Flume -> Hive -> ElasticSerach [Undone] Requiremnets: [poc/requirements.md](poc/requirements.md)
 * Project has business value. [TODO]
 
 ## Block
