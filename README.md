@@ -7,8 +7,17 @@ Flume + Hive + ElasticSearch
 
 ## Done
 * Hadoop cluster was set up successfully. Blow examples can be ran successfully.
+
 ```shell
+# Compute PI
 ./bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.0.jar pi 16 1000
+
+# Compute Word Count
+./bin/hdfs dfs  -mkdir /user/root/word_count_input
+./bin/hdfs dfs -copyFromLocal etc/hadoop/* /user/root/word_count_input/
+./bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.0.jar wordcount /user/root/word_count_input/ /user/root/word_count_output
+./bin/hdfs dfs -ls /user/root/word_count_output
+./bin/hdfs dfs -cat /user/root/word_count_output/part-r-00000
 ```
 
 
