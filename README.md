@@ -5,9 +5,21 @@ Flume + Hive + ElasticSearch
 * Hadoop: 2.8.0
 * ElasticSearch: 5.4.0
 
-## Done
+## Goal
+* Learn Hadoop: Know the work flow of Hadoop.  [TODO]
+* The original problem: Flume -> Hive -> ElasticSerach [Undone] Requiremnets: ![poc/requirements.md](poc/requirements.md "Requirements")
+* Project has business value. [TODO]
+
+## Block
+* Have no stable Hadoop cluster enviroment.
+
+## Next Step
+* The word count executing flow.
+
+## Done Things
 * Hadoop cluster was set up successfully. Blow examples can be ran successfully.
 * Hive can run on Hadoop Cluster. Hive is installed on NameNode. Is it correct to install Hive on NameNode?
+* Just completed the simplest requirements. Query data from Hive and push to ElasticSearch, then user can search that data in ElasticSearch and leverage all query capabilities provided by ElasticSearch.
 
 ```shell
 # Compute PI
@@ -20,10 +32,6 @@ Flume + Hive + ElasticSearch
 ./bin/hdfs dfs -ls /user/root/word_count_output
 ./bin/hdfs dfs -cat /user/root/word_count_output/part-r-00000
 ```
-
-## Current status:
-* Just completed the simplest requirements. Query data from Hive and push to ElasticSearch, then user can search that data in ElasticSearch and leverage all query capabilities provided by ElasticSearch.
-* Next step: 1. Hive + ElasticSearch on it.
 
 ## Achitecture
 ![Alt text](images/chaten-architecure.jpg?raw=true "Title")
