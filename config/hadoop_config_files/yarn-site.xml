@@ -34,12 +34,12 @@
     <!-- Configurations for ResourceManager: -->
     <property>
         <name>yarn.resourcemanager.hostname</name>
-        <value>10.141.49.90</value>
+        <value>10.141.45.166</value>
     </property>
 
     <property>
         <name>yarn.resourcemanager.scheduler.class</name>
-        <value>CapacityScheduler</value>
+        <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
     </property>
 
     <property>
@@ -50,7 +50,7 @@
 
     <property>
         <name>yarn.scheduler.maximum-allocation-mb</name>
-        <value>500</value>
+        <value>3200</value>
     </property>
 
     <property>
@@ -61,7 +61,7 @@
     <!-- Configurations for NodeManager -->
     <property>
         <name>yarn.nodemanager.resource.memory-mb</name>
-        <value>3000</value>
+        <value>4000/value>
     </property>
 
       <property>
@@ -89,6 +89,13 @@
     <name>yarn.nodemanager.env-whitelist</name>
     <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME</value>
   </property>
+
+<!-- If hadoop cannot set its value correclty automatically. You can config it directly. 
+ <property>
+  <name>yarn.nodemanager.hostname</name>
+  <value>10.141.68.198</value>
+</property>
+-->
 
 
 

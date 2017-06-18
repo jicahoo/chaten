@@ -6,11 +6,16 @@ Flume + Hive + ElasticSearch
 * ElasticSearch: 5.4.0
 
 ## Done
-* HDFS cluster was set up successfully.
+* Hadoop cluster was set up successfully. Blow examples can be ran successfully.
+```shell
+./bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.0.jar pi 16 1000
+```
+
+
 
 ## Current status:
 * Just completed the simplest requirements. Query data from Hive and push to ElasticSearch, then user can search that data in ElasticSearch and leverage all query capabilities provided by ElasticSearch.
-* Next step: 1. YARN and mapreduce cluster setup; 2. Hive + ElasticSearch on it.
+* Next step: 1. Hive + ElasticSearch on it.
 
 
 ## Achitecture

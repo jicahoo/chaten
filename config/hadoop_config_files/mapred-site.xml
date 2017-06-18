@@ -63,11 +63,11 @@
 
   <property>
     <name>mapreduce.jobhistory.address</name>
-    <value>10.141.45.166:10020</value>
+    <value>10.141.45.165:10020</value>
   </property>
   <property>
     <name>mapreduce.jobhistory.webapp.address</name>
-    <value>10.141.45.166:19888</value>
+    <value>10.141.45.165:19888</value>
   </property>
   <property>
     <name>mapreduce.jobhistory.intermediate-done-dir</name>
