@@ -4,6 +4,7 @@
 * http://ercoppa.github.io/HadoopInternals/AnatomyMapReduceJob.html (Has a good diagram about interaction between YARN and map-reduce.)
 * http://courses.coreservlets.com/Course-Materials/pdf/hadoop/04-MapRed-6-JobExecutionOnYarn.pdf  (More detalis about flow of MapReduce Flow, Memory config, Failures Handle)
 * https://www.youtube.com/watch?v=8m_GqOee1ro  (More details on MapReduce-on-YARN)
+* 《Hadoop权威指南》讲的还是比较全面和深入的. 从理论到实践，从流程到代码，从功能到调优，还有设计思想与权衡.
 
 ## MapReduce
 
