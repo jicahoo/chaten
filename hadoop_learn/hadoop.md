@@ -26,3 +26,5 @@
 ## MapReduce
 ### Core Class of MapReduce
 * org.apache.hadoop.mapred.MapTask
+### Difference between mapreduce package and mapred package
+* https://stackoverflow.com/questions/16269922/hadoop-mapred-vs-hadoop-mapreduce
