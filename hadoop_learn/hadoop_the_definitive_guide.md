@@ -1,6 +1,6 @@
 ## Hadoop权威指南笔记
 
-## P244: setOutputValueGroupingComparator
+## P244: JobConf.setOutputValueGroupingComparator
 ```java
   /**
    * Define the comparator that controls which keys are grouped together
