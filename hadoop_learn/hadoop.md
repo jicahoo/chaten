@@ -13,7 +13,7 @@
 
 ```java
 MapTaskAttemptImpl extends TaskAttempImpl
-ReduceTaskAttempImpl extends ReduceAttempImpl
+ReduceTaskAttempImpl extends TaskAttempImpl
 ```
 
 ## MapReduce
