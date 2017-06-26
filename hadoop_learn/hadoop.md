@@ -6,6 +6,8 @@
 * https://www.youtube.com/watch?v=8m_GqOee1ro  (More details on MapReduce-on-YARN)
 * 《Hadoop权威指南》讲的还是比较全面和深入的. 从理论到实践，从流程到代码，从功能到调优，还有设计思想与权衡.
 
+## Misc when broswe the code
+* Task(org.apache.hadoop.mapreduce.v2.app.job): read only view for task.
 ## MapReduce
 
 依照下面的脉络看代码:
