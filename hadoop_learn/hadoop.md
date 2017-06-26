@@ -10,6 +10,10 @@
 * Task(org.apache.hadoop.mapreduce.v2.app.job): read only view for task.
 * TaskAttemp(org.apache.hadoop.mapreduce.v2.app.job): Read only view of TaskAttempt
 * TaskAttemptImpl(org.apache.hadoop.mapreduce.v2.app.job.impl): Implementation of TaskAttempt interface. I think it is core class.
+'''java
+MapTaskAttemptImpl extends TaskAttempImpl
+ReduceTaskAttempImpl extends ReduceAttempImpl
+'''
 ## MapReduce
 
 依照下面的脉络看代码:
