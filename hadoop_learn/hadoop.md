@@ -8,6 +8,7 @@
 
 ## Misc when broswe the code
 * Task(org.apache.hadoop.mapreduce.v2.app.job): read only view for task.
+* TaskAttemp(org.apache.hadoop.mapreduce.v2.app.job): Read only view of TaskAttempt
 ## MapReduce
 
 依照下面的脉络看代码:
