@@ -59,7 +59,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    * return clientCache.getClient(jobId).getJobStatus(jobId); #这一步调用还有不少内容，目前还没弄清楚。
 
 ### YARN中的状态机
-* YARN中也有状态机: StateMachineFactory
+* YARN中也有状态机: StateMachineFactory,StateMachine (org.apache.hadoop.yarn.state)
             
   
 
