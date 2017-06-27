@@ -40,7 +40,10 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * ResourceManager和要提交作业的Client通信需要RPC协议ApplicationClientProtocol
 * ResourceManager和正在执行的应用通信需要RPC协议ApplicationMasterProtocol.
 ### 将作业提交到YARN的基本过程
-* YarnRunner.submitJob
+* org.apache.hadoop.mapreduce.Job.submit
+* JobSubmitter.submitInternal
+* JobID jobId = submitClient.getNewJobID(); #submitClient is of type ClientProtocol (an interface). YarnRunner implements ClientProtocol.
+* YarnRunner.submitJob(jobId,...
    * ResourceMgrDelegate.submitAppliction
       * YarnClient.submitApplication #YarnClient is interface. From code we guess its instance will be with type YarnClientImpl at running status.
       * YarnClientImpl.submitApplication
