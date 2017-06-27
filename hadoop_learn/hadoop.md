@@ -60,6 +60,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 
 ### YARN中的状态机
 * YARN中也有状态机: StateMachineFactory,StateMachine (org.apache.hadoop.yarn.state)
+* RMAppImpl和RMAppAttempImpl都使用了状态机
             
   
 
