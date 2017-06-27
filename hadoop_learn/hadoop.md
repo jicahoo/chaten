@@ -35,6 +35,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
  
 ### YARN Resource Manager 相关的三大RPC
 * http://blog.csdn.net/lipeng_bigdata/article/details/52002854
+* ResourceManager有三个RPC相关的成员变量：ClientRMService, ApplicationMasterService,  ResourceTrackerService. 这些成员都是RPC的服务器端实现。他们的职责分别是和提交作业的Client通信，和正在运行的ApplicationMaster通信，和NodeManager通信；他们实现的RPC协议是ApplicationClientProtocol, ApplicationMasterProtocol, ResourceTracker。这些协议都是以Java接口的形式定义的。
 * ResourceManager和ResourceTracker通信需要RPC协议ResourceTracker
 * ResourceManager和要提交作业的Client通信需要RPC协议ApplicationClientProtocol
 * ResourceManager和正在执行的应用通信需要RPC协议ApplicationMasterProtocol.
