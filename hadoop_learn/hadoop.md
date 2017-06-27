@@ -39,6 +39,16 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * ResourceManager和ResourceTracker通信需要RPC协议ResourceTracker
 * ResourceManager和要提交作业的Client通信需要RPC协议ApplicationClientProtocol
 * ResourceManager和正在执行的应用通信需要RPC协议ApplicationMasterProtocol.
+### 将作业提交到YARN的基本过程
+* YarnRunner.submitJob
+   * ResourceMgrDelegate.submitAppliction
+      * YarnClient.submitApplication #YarnClient is interface. From code we guess its instance will be with type YarnClientImpl at running status.
+      * YarnClientImpl.submitApplication
+         * ApplicationClientProtocol.submitApplication #It is also a interface. We guess it will be ApplicationClientProtocolPBClientImpl
+         * ApplicationClientProtocolPBClientImpl.submitApplication #RPC client
+         * ----- I am network ---
+         * ClientRMService.submitApplication. # RPC server.
+      
 
 ## MapReduce
 ### Core Class of MapReduce
