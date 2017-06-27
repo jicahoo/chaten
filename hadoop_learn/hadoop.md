@@ -32,6 +32,12 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * ${HADOOP_HOME}/bin/yarn -> yarn resourcemanager -> org.apache.hadoop.yarn.server.resourcemanager.ResourceManager.main -> May clear RMState (MemRMStat, ZkRMState)  -> 
     * ResourceManager.init(conf) -> ResourceManager.serviceInit (conf, rmContext, rmLoginUGI, rmDispatcher, adminService, webAppAddress)
     * ResourceManager.start() -> ResourceManager.serviceStart -> ResourceManager.startWepApp(): Build a embedded web app using Jetty, war is from hadoop-yarn-ui-version.war
+ 
+### YARN Resource Manager 相关的三大RPC
+* http://blog.csdn.net/lipeng_bigdata/article/details/52002854
+* ResourceManager和ResourceTracker通信需要RPC协议ResourceTracker
+* ResourceManager和要提交作业的Client通信需要RPC协议ApplicationClientProtocol
+* ResourceManager和正在执行的应用通信需要RPC协议ApplicationMasterProtocol.
 
 ## MapReduce
 ### Core Class of MapReduce
