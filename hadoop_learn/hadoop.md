@@ -50,7 +50,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
          * ApplicationClientProtocol.submitApplication #It is also a interface. We guess it will be ApplicationClientProtocolPBClientImpl
          * ApplicationClientProtocolPBClientImpl.submitApplication #RPC client
          * ----- I am network ---
-         * ClientRMService.submitApplication. # RPC server.
+         * ClientRMService.submitApplication. # RPC server. ClientRMService also implements ApplicationClientPRotocol.
             * RMAppManager.submitApplication
                * RMAppManager.createAndPopulateNewRMApp. #真正去创建RMApp.
             * 成功: return recordFactory.newRecordInstance(SubmitApplicationResponse.class);
