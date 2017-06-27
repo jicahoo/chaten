@@ -52,8 +52,8 @@ ReduceTaskAttempImpl extends TaskAttempImpl
                * RMAppManager.createAndPopulateNewRMApp. #真正去创建RMApp.
             * 成功: return recordFactory.newRecordInstance(SubmitApplicationResponse.class);
             * 失败: YarnException.
-   * 获得 applicationId (from ResourceMgrDelegate.submitApplication)
-   * return clientCache.getClient(jobId).getJobStatus(jobId); #这一步调用还有不少内容，目前还没弄清楚。
+   * 获得 applicationId (from ResourceMgrDelegate.submitApplication)
+   * return clientCache.getClient(jobId).getJobStatus(jobId); #这一步调用还有不少内容，目前还没弄清楚。
             
   
 
