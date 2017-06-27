@@ -59,8 +59,8 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    * return clientCache.getClient(jobId).getJobStatus(jobId); #这一步调用还有不少内容，目前还没弄清楚。
 
 ### YARN中的状态机
-* YARN中也有状态机: StateMachineFactory,StateMachine,SingleArcTransition (org.apache.hadoop.yarn.state)
-* RMAppImpl和RMAppAttempImpl都使用了状态机
+* YARN中也有状态机: StateMachineFactory,StateMachine,SingleArcTransition (org.apache.hadoop.yarn.state), RMAppState, RMAppEvent, RMAppEventType
+* RMAppImpl和RMAppAttempImpl都使用了状态机。所以相应的代码中，有许多Transition类的定义和对应状态转移的注册。
             
   
 
