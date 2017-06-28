@@ -83,6 +83,6 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * Mapper.map方法的Context参数是抽象类。该抽象类的具体实现是WrappedMapper.Context. 这个实现类会包含一个类型为MapContext的成员. 在runNewMapper方法中，会创建一个具体的MapContextImpl，并包裹在WrappedMapper中。所以, 具体干活的类是MapContextImpl。MapContextImpl又继承了TaskInputOutputContextImpl的一些关于输出收集的功能。
 * 结合上面三条，我们可以得出结论，在Mapper.map的具体实现方法中，调用context.write, 就会调用到MapContextImpl.write方法，从而调用到RecordWriter.write, 最终，就会调用到MapOutputBuffer的collect方法。整个过程的调用栈如下，
    * Mapper.Context.write (具体实现方法：WrappedMapper.write)
-      * MapContext.write (MapContextImpl.write)
-      * RecordWrite.write (具体实现方法：NewOutputCollector.write)
-         * MapOutputCollector.collect (具体实现方法: MapperOutputBuffer.collect)
+      * MapContext.write (MapContextImpl.write)
+         * RecordWrite.write (具体实现方法：NewOutputCollector.write)
+            * MapOutputCollector.collect (具体实现方法: MapperOutputBuffer.collect)
