@@ -76,4 +76,4 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * MapTask.runNewMapper #It will run customer-defined map.
    * mapper.run(mapperContext);
 * MapTask: 成员
-   1. MapOutputBuffer #著名的环形缓冲
+   1. MapOutputBuffer #著名的环形缓冲
