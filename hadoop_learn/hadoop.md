@@ -71,3 +71,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * org.apache.hadoop.mapred.MapTask
 ### Difference between mapreduce package and mapred package
 * https://stackoverflow.com/questions/16269922/hadoop-mapred-vs-hadoop-mapreduce
+
+### Source Code
+* MapTask.runNewMapper #It will run customer-defined map.
+   * mapper.run(mapperContext);
