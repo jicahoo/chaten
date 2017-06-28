@@ -78,3 +78,4 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * MapTask: 成员
    1. MapOutputBuffer #著名的环形缓冲
 * YarnChild: The main() for MapReduce task processes.
+* MapOutputBuffer is a MapOutputCollector. #Map任务使用MapOutputBuffer作为默认的MapOutputCollector.
