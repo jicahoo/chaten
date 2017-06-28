@@ -80,3 +80,4 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * YarnChild: The main() for MapReduce task processes.
 * MapOutputBuffer is a MapOutputCollector. #Map任务使用MapOutputBuffer作为默认的MapOutputCollector.
 * MapTask.NewOutputCollector是RecordWriter的子类。MapTask.NewOutputCollector包含了一个类型为MapOutputCollector的成员。写操作(RecordWriter.write)的具体执行就是调用MapOutputCollector.collect.
+* Mapper.map方法的Context参数是抽象类。该抽象类的具体实现是WrappedMapper.Context. 这个实现类会包含一个类型为MapContext的成员. 在runNewMapper方法中，会创建一个具体的MapContextImpl，并包裹在WrappedMapper中。所以, 具体干活的类是MapContextImpl.
