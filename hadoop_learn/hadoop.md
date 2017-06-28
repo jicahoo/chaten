@@ -77,3 +77,4 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    * mapper.run(mapperContext);
 * MapTask: 成员
    1. MapOutputBuffer #著名的环形缓冲
+* YarnChild: The main() for MapReduce task processes.
