@@ -93,3 +93,4 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    * SpillThread
    * InMemValBytes
    * MRResultIterator.
+* MapOutputBuffer: 利用Stream的方式来移动byte. 
