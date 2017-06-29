@@ -88,8 +88,8 @@ ReduceTaskAttempImpl extends TaskAttempImpl
             * MapOutputCollector.collect (具体实现方法: MapperOutputBuffer.collect)
 ### MapTask.MapOutputBuffer #环形缓冲
 * MapOutputBuffer使用了几个instance级别的内部类来完成工作，这样内部类可以访问外层类的成员变量，所以，逻辑调用不一定那么清楚。就像是到处在访问全局编练似的.
-   * BlockingBuffer: 访问了kvbuffer
+   * BlockingBuffer: 访问了kvbuffer, 包装了Buffer.
    * Buffer: 访问kvbuffer
-   * SpillThread
+   * SpillThread
    * InMemValBytes
    * MRResultIterator.
