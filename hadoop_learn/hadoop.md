@@ -87,19 +87,19 @@ ReduceTaskAttempImpl extends TaskAttempImpl
          * RecordWrite.write (具体实现方法：NewOutputCollector.write)
             * MapOutputCollector.collect (具体实现方法: MapperOutputBuffer.collect)
 ### MapTask.MapOutputBuffer #环形缓冲
-* MapOutputBuffer使用了几个instance级别的内部类来完成工作，这样内部类可以访问外层类的成员变量，所以，逻辑调用不一定那么清楚。就像是到处在访问全局编练似的.
-   * BlockingBuffer: 访问了kvbuffer, 包装了Buffer.
-   * Buffer: 访问kvbuffer
+* MapOutputBuffer使用了几个instance级别的内部类来完成工作，这样内部类可以访问外层类的成员变量，所以，逻辑调用不一定那么清楚。就像是到处在访问全局变量似的.
+   * BlockingBuffer: 访问了kvbuffer, 包装了Buffer.
+   * Buffer: 访问kvbuffer
    * SpillThread
    * InMemValBytes
    * MRResultIterator.
 * MapOutputBuffer: 利用Stream的方式来移动byte. 
 * MapOutputBuffer.flush会调用MapOutputBuffer.mergeParts得到最终的一个Map任务的输出文件。
 * 正常的写入到kvbuffer的流程。过程中不出现异常，不出现空间不足，不出现wrap around。
-   * 终点: MapTask.MapOutputBuffer.Buffer.write: System.arraycopy(b, off, kvbuffer, bufindex, len);
-   * 起点：MapOutputBuffer.collect
+    * 终点: MapTask.MapOutputBuffer.Buffer.write: System.arraycopy(b, off, kvbuffer, bufindex, len);
+    * 起点：MapOutputBuffer.collect
       * keySerializer.serialize(key); (WritableSerializer.serialize(Writable w)).
-         * w.write(dataOut); (Text.write(DataOutput out)) #dataOut正是MapOutputBuffer.BlockingBuffer. BlockingBuffer继承自DataOutputStream.
-         * out.write(bytes, 0, length); #out就是BlockingBuffer, 而BlockingBuffer包装了MapOutputBuffer.Buffer, 所以会调用Buffer.write
-            * Buffer.write(byte b[], int off, int len)
-               * 终点：System.arraycopy(b, off, kvbuffer, bufindex, len);
+        * w.write(dataOut); (Text.write(DataOutput out)) #dataOut正是MapOutputBuffer.BlockingBuffer. BlockingBuffer继承自DataOutputStream.
+            * out.write(bytes, 0, length); #out就是BlockingBuffer, 而BlockingBuffer包装了MapOutputBuffer.Buffer, 所以会调用Buffer.write
+                * Buffer.write(byte b[], int off, int len)
+                    * 终点：System.arraycopy(b, off, kvbuffer, bufindex, len);
