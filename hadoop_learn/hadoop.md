@@ -94,3 +94,4 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    * InMemValBytes
    * MRResultIterator.
 * MapOutputBuffer: 利用Stream的方式来移动byte. 
+* MapOutputBuffer.flush会调用MapOutputBuffer.mergeParts得到最终的一个Map任务的输出文件。
