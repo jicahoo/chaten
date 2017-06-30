@@ -124,3 +124,37 @@ ReduceTaskAttempImpl extends TaskAttempImpl
     * 两者之间会争用spillLock
     * 当collect发现需要spill的时候，就会调用startSpill，去通知随时待命的SpillThread进行sortAndSpill
     * 在MapOutputBuffer.init中，会初始化SpillThread, 让该线程处于待命状态，一直等待spillThreadRunning变成true, 否则，在条件队列spillDone上等待。
+
+### Spill之后的合并
+* 入口： MapoutputBuffer.mergeParts
+* 实现合并逻辑的核心类：org.apache.hadoop.mapred.Merger 和 org.apache.hadoop.mapred.Merger.MergeQueue
+* 合并过程中的排序是如何实现的： MergeQueue其实是个小根堆。 MergeQueue中的元素是Segment<K,V>.
+* mergetParts中的核心代码:
+
+```java
+        for (int parts = 0; parts < partitions; parts++) {
+            //create the segments to be merged
+            List<Segment<K,V>> segmentList =
+                new ArrayList<Segment<K, V>>(numSpills);
+            for(int i = 0; i < numSpills; i++) {
+                IndexRecord indexRecord = indexCacheList.get(i).getIndex(parts);
+                ...
+            }
+
+            @SuppressWarnings("unchecked")
+            RawKeyValueIterator kvIter = Merger.merge(job, rfs,
+                            keyClass, valClass, codec,
+                            segmentList, mergeFactor,
+                            new Path(mapId.toString()),
+                            job.getOutputKeyComparator(), reporter, sortSegments,
+                            null, spilledRecordsCounter, sortPhase.phase(),
+                            TaskType.MAP);
+            ...
+            Merger.writeFile(kvIter, writer, reporter, job);
+            ...
+        }
+```
+
+* 从代码可以看出，合并是一个分区一个分区地执行的。
+* kvIter就返回一个迭代器，每次迭代就可以拿出小根堆的堆顶元素。
+* 输出：一个文件：Path finalIndexFile = mapOutputFile.getOutputIndexFileForWrite(finalIndexFileSize);
