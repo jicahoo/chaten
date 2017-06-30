@@ -78,6 +78,8 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * MapTask: 成员
    1. MapOutputBuffer #著名的环形缓冲
 * YarnChild: The main() for MapReduce task processes.
+
+### MapTask如何collect输出
 * MapOutputBuffer is a MapOutputCollector. #Map任务使用MapOutputBuffer作为默认的MapOutputCollector.
 * MapTask.NewOutputCollector是RecordWriter的子类。MapTask.NewOutputCollector包含了一个类型为MapOutputCollector的成员。写操作(RecordWriter.write)的具体执行就是调用MapOutputCollector.collect.
 * Mapper.map方法的Context参数是抽象类。该抽象类的具体实现是WrappedMapper.Context. 这个实现类会包含一个类型为MapContext的成员. 在runNewMapper方法中，会创建一个具体的MapContextImpl，并包裹在WrappedMapper中。所以, 具体干活的类是MapContextImpl。MapContextImpl又继承了TaskInputOutputContextImpl的一些关于输出收集的功能。
@@ -86,14 +88,15 @@ ReduceTaskAttempImpl extends TaskAttempImpl
       * MapContext.write (MapContextImpl.write)
          * RecordWrite.write (具体实现方法：NewOutputCollector.write)
             * MapOutputCollector.collect (具体实现方法: MapperOutputBuffer.collect)
-### MapTask.MapOutputBuffer #环形缓冲
+
+### MapTask.MapOutputBuffer. 如何写缓冲区  #环形缓冲
 * MapOutputBuffer使用了几个instance级别的内部类来完成工作，这样内部类可以访问外层类的成员变量，所以，逻辑调用不一定那么清楚。就像是到处在访问全局变量似的.
    * BlockingBuffer: 访问了kvbuffer, 包装了Buffer.
    * Buffer: 访问kvbuffer
    * SpillThread
    * InMemValBytes
    * MRResultIterator.
-* MapOutputBuffer: 利用Stream的方式来移动byte. 
+* MapOutputBuffer: 利用Stream的方式来移动byte.  使用System.arraycopy来操作缓冲。
 * MapOutputBuffer.flush会调用MapOutputBuffer.mergeParts得到最终的一个Map任务的输出文件。
 * 正常的写入到kvbuffer的流程。过程中不出现异常，不出现空间不足，不出现wrap around。
     * 终点: MapTask.MapOutputBuffer.Buffer.write: System.arraycopy(b, off, kvbuffer, bufindex, len);
@@ -103,3 +106,21 @@ ReduceTaskAttempImpl extends TaskAttempImpl
             * out.write(bytes, 0, length); #out就是BlockingBuffer, 而BlockingBuffer包装了MapOutputBuffer.Buffer, 所以会调用Buffer.write
                 * Buffer.write(byte b[], int off, int len)
                     * 终点：System.arraycopy(b, off, kvbuffer, bufindex, len);
+
+### 如何Spill
+* 具体执行函数： MapOutputBuffer#sortAndSpill 
+* 排序：
+    * sorter.sort(MapOutputBuffer.this, mstart, mend, reporter); #排序的范围是当前环形缓冲的所有记录。
+    * 理解上面的调用:
+        * 第一个参数就是MapOutputBuffer本身，MapOutputBuffer实现了IndexedSortable的接口：compare(i,j), swap(i,j). 根据index排序的基础操作。 第一个参数是排序的主题，可以把它想象成数组，数组放上可排序的元素就是IndexedSortable.
+        * 后面几个参数理解就很容易了。 最后一个参数的类型其实是Progressable, 用来记录排序的进度。
+        * MapOutpubBuffer的compare是决定数据如何排序的: 先按分区排序，再按键排序。
+    * 结论：此处的排序是局部(当前缓冲区)有序。
+
+* sortAndSpill的输出：一个spill文件
+    * MapOutputBuffer有一个numSpills的整形成员变量，用以记录写了多少个Spill文件，会作为输出文件名的一部分。OutputFiles#getSpillFileForWrite的文件名就会设置为"spill"+numSpills+".out".
+
+* SpliiThread会调用sortAndSpill函数。SpillThread会和MapOutputBuffer.collect所在的线程进行同步。
+    * 两者之间会争用spillLock
+    * 当collect发现需要spill的时候，就会调用startSpill，去通知随时待命的SpillThread进行sortAndSpill
+    * 在MapOutputBuffer.init中，会初始化SpillThread, 让该线程处于待命状态，一直等待spillThreadRunning变成true, 否则，在条件队列spillDone上等待。
