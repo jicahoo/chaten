@@ -158,3 +158,30 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * 从代码可以看出，合并是一个分区一个分区地执行的。
 * kvIter就返回一个迭代器，每次迭代就可以拿出小根堆的堆顶元素。
 * 输出：一个文件：Path finalIndexFile = mapOutputFile.getOutputIndexFileForWrite(finalIndexFileSize);
+
+## Reduce
+* Reduce任务的大致执行过程
+    * 入口： run(JobConf job, final TaskUmbilicalProtocol umbilical) #会被YarnChild.main调用.
+    * 分三个主要过程(phase)：copy, sort, reduce.
+    * 委托Shuffle.run方法完成了copy和sort过程。Shuffle实现了ShuffleConsumerPlugin接口。
+    * 委托NewTrackingRecordWriter将结果写出。
+
+* Shuffle.run完成了两件事：Copy 和 merge, 最终, 通过MergeManagerImpl.close方法返回一个RawKeyValueIterator
+* 第一个阶段：Copy
+    * 代码位置：Shuffle.run的前半部分。其中有个调用： copyPhase.complete();  宣告了Copy阶段的结束。
+    * Copy的具体工作是由EventFetcher和Fetcher来完成的。
+    * Reduce怎样知道什么时候，去哪才能拿到已完成的Map任务的输出？
+        * EventFetcher线程会不断地从父Java进程中，获取TaskCompletionEvent. 交互协议用的是Umbilical.
+        * EventFetcher的成员scheduler(ShuffleScheduler)会负责解析TaskCompletionEvent。具体代码在EventFetcher.getMapCompletionEvents方法中，会为每个Event调用:scheduler.resolve方法。会记录下Map输出所在的Host的信息.
+        * Shuffle.run中，在启动EventFetcher线程之后，会启动多个Fetcher线程（默认为5个）进行具体的Copy工作。
+        * Note: scheduler(ShuffleSchedulerImpl)是EventFetcher和Fetcher的桥梁。
+* 第二个阶段：Sort (Merge)
+    * 入口: Shuffle.run: merger.close(). #merger是类MergeManagerImpl的一个实例
+    * MergerManager会利用OnDiskMerger, InMemoryMerger, Merger完成合并过程。
+
+* 第三个阶段： Reduce
+    * 上面的两个阶段的输出就转化为一个RawKeyValueIterator
+    * ReduceTask.run会调用runNewReducer来具体完成。runNewReducer比较简单
+        * 构造ReduceContext
+        * 创建客户提供的Reducer类的实例.
+        * 调用Reducer类的run(Context)方法。
