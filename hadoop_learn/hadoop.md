@@ -1,5 +1,24 @@
 # 
 
+## Contirbute to Hadoop
+* https://issues.apache.org/jira 注册了ASF的JIRA, 用QQ邮箱, 用LianWaiYuChanChan名字。
+* https://wiki.apache.org/hadoop/HowToContribute
+* Bugs I want to fix:
+    * https://issues.apache.org/jira/browse/YARN-6296
+* Steps:
+    1. git clone git://git.apache.org/hadoop.git
+    2. Create your branch from trunk branch.
+    3. Change code
+    4. Unit tests: mvn clean install -Pdist -Dtar -Ptest-patch
+    5. Run single test:  mvn -Dtest=TestCopyPreserveFlag test
+* Jenkins Build:
+    * https://builds.apache.org/job/PreCommit-HADOOP-Build/
+* References:
+    1. https://wiki.apache.org/hadoop/GitAndHadoop
+* Requirements for build env:
+    * Check BUILDING.txt
+    * https://askubuntu.com/questions/532701/how-can-i-install-protobuf-in-ubuntu-12-04 :install protocolbuffer
+    * https://wiki.apache.org/hadoop/ProtocolBuffers
 ## Reference
 * http://ercoppa.github.io/HadoopInternals/AnatomyMapReduceJob.html (Has a good diagram about interaction between YARN and map-reduce.)
 * http://courses.coreservlets.com/Course-Materials/pdf/hadoop/04-MapRed-6-JobExecutionOnYarn.pdf  (More detalis about flow of MapReduce Flow, Memory config, Failures Handle)
@@ -185,3 +204,17 @@ ReduceTaskAttempImpl extends TaskAttempImpl
         * 构造ReduceContext
         * 创建客户提供的Reducer类的实例.
         * 调用Reducer类的run(Context)方法。
+
+## 一些心得
+    * 为什么叫做Shuffle? 就像快速排序里面的Shuffle类似，让数据随机地均匀分布，均匀分布到不同的机器上。这样最大限度地利用集群计算资源，提高并行度，快速完成任务。虽然，里面有排序和合并操作，但是在更高层次上，我们的目标还是Shuffle, 让中间数据，尽量随机地被分配到不同的Reducer去处理。
+    * Lambda, Kappa 架构： http://milinda.pathirage.org/kappa-architecture.com/ [TODO]
+    * https://jornfranke.wordpress.com/2016/11/11/lambda-kappa-microservice-and-enterprise-architecture-for-big-data/
+    * 降低磁盘读写次数，在Map和Reduce端的合并阶段都有体现。
+    * 降低网络传输距离，次数和数据量。Map输出的压缩, Combine都是为了减少网络传输的数据量。 
+    * 尽量避免移动数据，让计算靠近数据。
+    * 以迭代器的方式，读取数据；避免把数据一次加载到内存。RawKeyIterator. 内存是稀缺资源。
+    * 在内存的时候，对数据尽量做有助于获得最终结果的计算，在RingBuffer中，做了排序。虽然，是局部有序，通过合并排序，可以更快得到全局有序。
+    * 数据的组织效率是大数据的核心技术。 无论是内存, 磁盘还是网络上。所以，大数据框架都会操作二进制(RPC的序列化技术:hadoop-protocolbuffer), 甚至自己管理内存(Spark)。
+    * 数据的IO效率： 磁盘和网络。 磁盘NIO, 网络: Netty? 是这样吗？[TODO]
+    * 数据的读取，经常是根据偏移，长度来读取。偏移在操作系统层面是O(1)的, 但是文件系统呢？[TODO]
+    * Map中间结果的存放好像有点像Ext4的文件存放方式: https://en.wikipedia.org/wiki/Inode_pointer_structure
