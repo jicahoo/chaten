@@ -98,6 +98,42 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    1. MapOutputBuffer #著名的环形缓冲
 * YarnChild: The main() for MapReduce task processes.
 
+### MapTask是如何获取Split的。
+
+* MRAppMaster.serviceStart 
+    * jobEventDispacther.handle(initJobEvent) #此处是同步调用。 发送的是JobEVentType.JOB_INIT事件，会触发JobImpl.InitTransition.transition.
+    * JobImpl.InitTransition.transition
+        * TaskSplitMetaInfo[] taskSplitMetaInfo = createSplits(job, job.jobId); #创建输入分片。
+        * JobImpl.createMapTask(job, inputLength, taskSplitMetaInfo)
+            * new MapTaskImpl(..., splits[i], ...)
+                * MapTaskImp.constructor(..., taskSplitMetaInfo, ...)
+
+* TaskImp.addAttempt
+    * MapTaskImpl.createAttemp:
+        * new MapTaskAttempImpl(..., taskSplitMetaInfo,...)
+        
+
+## 分片是如何创建的。
+任务(Job)提交的时候创建分片(JobSubmitter.submitJobInternal)。 
+任务(Job)初始化的时候读取分片信息(JobImpl.InitTransition.transition会调用createSplits).
+* JobImpl.InitTransition.transition
+    * job.numMapTasks = taskSplitMetaInfo.length; 分片的数量就会赋值给Map任务的数量。
+    * createMapTasks(job, inputLength, taskSplitMetaInfo); 为每一个分片创建一个Map任务。JobImpl有个成员变量:mapTasks存放了要运行的Map任务。
+* MapTaskImpl.createAttempt: 将taskSplitMetaInfo传递给MapTaskAttempImpl.
+* ?连不上MapTask.run和MapTaskAttempt,Split
+
+* JobImpl.InitTransition.createSplits
+    * SplitMetaInfoReader.readSplitMetaInfo:
+
+* Related class:
+    * JobSplitWriter : * The class that is used by the Job clients to write splits (both the meta and the raw bytes parts) *
+    * JobSubmitter.submitJobInternal: One work: Computing the {@link InputSplit}s for the job.
+        * JobSubmmiter.writeSplits:
+            * JobSubmitter.writeNewSplits
+                * List<InputSplit> splits = input.getSplits(job); #input的类型是InputFormat类型. 如果是TextInputFormat, 就会调用FileInputFormat.getSplits进行文件类型的分片。
+                * JobSplitWriter.createSplitFiles
+
+
 ### MapTask如何collect输出
 * MapOutputBuffer is a MapOutputCollector. #Map任务使用MapOutputBuffer作为默认的MapOutputCollector.
 * MapTask.NewOutputCollector是RecordWriter的子类。MapTask.NewOutputCollector包含了一个类型为MapOutputCollector的成员。写操作(RecordWriter.write)的具体执行就是调用MapOutputCollector.collect.
@@ -204,6 +240,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
         * 构造ReduceContext
         * 创建客户提供的Reducer类的实例.
         * 调用Reducer类的run(Context)方法。
+
 
 ## 一些心得
     * 为什么叫做Shuffle? 就像快速排序里面的Shuffle类似，让数据随机地均匀分布，均匀分布到不同的机器上。这样最大限度地利用集群计算资源，提高并行度，快速完成任务。虽然，里面有排序和合并操作，但是在更高层次上，我们的目标还是Shuffle, 让中间数据，尽量随机地被分配到不同的Reducer去处理。
