@@ -20,6 +20,7 @@
     * https://askubuntu.com/questions/532701/how-can-i-install-protobuf-in-ubuntu-12-04 :install protocolbuffer
     * https://wiki.apache.org/hadoop/ProtocolBuffers
 ## Reference
+× http://ercoppa.github.io/HadoopInternals/HadoopArchitectureOverview.html 里面包含了许多状态机的示意图
 * http://ercoppa.github.io/HadoopInternals/AnatomyMapReduceJob.html (Has a good diagram about interaction between YARN and map-reduce.)
 * http://courses.coreservlets.com/Course-Materials/pdf/hadoop/04-MapRed-6-JobExecutionOnYarn.pdf  (More detalis about flow of MapReduce Flow, Memory config, Failures Handle)
 * https://www.youtube.com/watch?v=8m_GqOee1ro  (More details on MapReduce-on-YARN)
