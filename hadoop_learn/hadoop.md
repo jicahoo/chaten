@@ -222,6 +222,8 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    * stateMachine.getCurrentState()
 * 状态机接受并处理事件：TaskAttemptImpl.handle(TaskAttemptEvent)
    * stateMachine.doTransition(event.getType(), event); #一定是调用在状态机工厂里注册的一大堆Transition.
+* 貌似MRAppMaster会驱动TaskAttemptImpl的状态机
+   * 分配器出现了， MRAppMaster有一个dispacther变量，具体类型为：AsyncDispatcher, 由方法MRAppMaster.createDispatcher创建.
    
 ## Reduce
 * Reduce任务的大致执行过程
