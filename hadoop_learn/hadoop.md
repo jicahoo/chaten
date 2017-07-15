@@ -224,7 +224,13 @@ ReduceTaskAttempImpl extends TaskAttempImpl
    * stateMachine.doTransition(event.getType(), event); #一定是调用在状态机工厂里注册的一大堆Transition.
 * 貌似MRAppMaster会驱动TaskAttemptImpl的状态机
    * 分配器出现了， MRAppMaster有一个dispacther变量，具体类型为：AsyncDispatcher, 由方法MRAppMaster.createDispatcher创建.
-   
+* 在dispacter上注册了TaskAttemptEventDispacther.MRAppMaster.serviceInit
+
+```java
+      dispatcher.register(TaskAttemptEventType.class, 
+          new TaskAttemptEventDispatcher());
+```
+
 ## Reduce
 * Reduce任务的大致执行过程
     * 入口： run(JobConf job, final TaskUmbilicalProtocol umbilical) #会被YarnChild.main调用.
