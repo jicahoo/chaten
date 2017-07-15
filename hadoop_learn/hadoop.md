@@ -214,7 +214,8 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * 从代码可以看出，合并是一个分区一个分区地执行的。
 * kvIter就返回一个迭代器，每次迭代就可以拿出小根堆的堆顶元素。
 * 输出：一个文件：Path finalIndexFile = mapOutputFile.getOutputIndexFileForWrite(finalIndexFileSize);
-
+## TaskAttempImpl的状态机
+* Hadoop中有一个自己实现的状态机，很多地方都用到了。先找个地方理解了状态机的运行方式，才能读懂相关逻辑。
 ## Reduce
 * Reduce任务的大致执行过程
     * 入口： run(JobConf job, final TaskUmbilicalProtocol umbilical) #会被YarnChild.main调用.
