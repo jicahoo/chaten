@@ -216,6 +216,13 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * 输出：一个文件：Path finalIndexFile = mapOutputFile.getOutputIndexFileForWrite(finalIndexFileSize);
 ## TaskAttempImpl的状态机
 * Hadoop中有一个自己实现的状态机，很多地方都用到了。先找个地方理解了状态机的运行方式，才能读懂相关逻辑。
+* 状态机的初始化:
+   * stateMachine = stateMachineFactory.make(this); #TaskAttemptImpl.TaskAttemptImpl(...
+* 查询状态机状态：
+   * stateMachine.getCurrentState()
+* 状态机接受并处理事件：TaskAttemptImpl.handle(TaskAttemptEvent)
+   * stateMachine.doTransition(event.getType(), event); #一定是调用在状态机工厂里注册的一大堆Transition.
+   
 ## Reduce
 * Reduce任务的大致执行过程
     * 入口： run(JobConf job, final TaskUmbilicalProtocol umbilical) #会被YarnChild.main调用.
