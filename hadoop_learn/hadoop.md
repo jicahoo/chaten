@@ -232,6 +232,11 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 ```
 * MRAppMaster.createJob会将dispacter.getEventHandler注入给JobImpl. JobImpl就用这个eventHandler发送消息。这个EventHandler的类型是AsyncDispatcher.GenericEventHandler，它的主要职责并不是处理这个事件，而是将它放到AyscDispacther的事件队列里面去。
 * 在AsycnDispacther的事件队列的另一端，有一个专门的线程，会从队列中去事件，根据事件的类型，发送给对应类型的EventHandler. 从上文可知，我们为TaskAttempEventType类型的事件，注册了TaskAttemptEventDispatcher, TaskAttemptEventDispatcher实现了EventHandler<TaskAttemptEvent>，也是一个EventHandler, 它实现的handle函数其实会找到对应的TaskAttempt, 并调用TaskAttemp的handle方法。因为，TaskAttemptImpl也实现了 EventHandler<TaskAttemptEvent>，TaskAttemptImpl.handle方法就会调用状态机的doTransition方法。
+* JobImpl就会通过注册的EventHandler，发送事件，例如
+
+```java
+            eventHandler.handle(new TaskAttemptKillEvent(id, mesg, true));
+```
 
 ## Reduce
 * Reduce任务的大致执行过程
