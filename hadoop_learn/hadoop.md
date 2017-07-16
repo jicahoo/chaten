@@ -237,6 +237,21 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 ```java
             eventHandler.handle(new TaskAttemptKillEvent(id, mesg, true));
 ```
+## 核心类之MRAppMaster
+* MRAppMaster has
+   * a Job memeber.
+   * 
+* MRAppMaster:
+   * main:
+      * MRAppMaster appMaster =   new MRAppMaster(applicationAttemptId, containerId, nodeHostString, Integer.parseInt(nodePortString), Integer.parseInt(nodeHttpPortString), appSubmitTime);
+      * initAndStartAppMaster(appMaster, conf, jobUserName);
+         * appMaster.serviceInit
+         
+## 核心类之JobImpl. org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl
+* JobImpl has
+   * Set<TaskId> mapTasks 
+   * Set<TaskId> reduceTasks
+
 
 ## Reduce
 * Reduce任务的大致执行过程
