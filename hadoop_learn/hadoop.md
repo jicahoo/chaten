@@ -238,17 +238,27 @@ ReduceTaskAttempImpl extends TaskAttempImpl
             eventHandler.handle(new TaskAttemptKillEvent(id, mesg, true));
 ```
 ## 核心类之MRAppMaster
+* 参照：http://ercoppa.github.io/HadoopInternals/ApplicationMaster.html 
 * MRAppMaster has
-   * a Job memeber.
+   * a Job member.
    * 
 * MRAppMaster: MRAppMaster下的Job和Task的启动流程
    * main:
       * MRAppMaster appMaster =   new MRAppMaster(applicationAttemptId, containerId, nodeHostString, Integer.parseInt(nodePortString), Integer.parseInt(nodeHttpPortString), appSubmitTime);
       * initAndStartAppMaster(appMaster, conf, jobUserName);
-         * appMaster.serviceInit
+         * appMaster.serviceStart
             * JobEvent initJobEvent = new JobEvent(job.getID(), JobEventType.JOB_INIT);
             * jobEventDispatcher.handle(initJobEvent); #同步地初始化JobImpl. 
-         
+            * super.serviceStart #CompositeService.serviceStart. 启动在serviceInit时注册的子Service
+               * dispatcher
+               * taskAttemptFinishingMonitor
+               * containerAllocator # LocalContainerAllocator or RMContainerAllocator
+               * historyService
+               * taskAttemptListener
+               * speculator
+               * containerLauncher #LocalContainerLauncher or ContainerLauncherImpl
+            * startJobs() #发送JobStartEvent给当前Job.
+         
 ## 核心类之JobImpl. org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl
 * JobImpl has
    * Set<TaskId> mapTasks 
