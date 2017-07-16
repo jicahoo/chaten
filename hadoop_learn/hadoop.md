@@ -257,7 +257,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
                * taskAttemptListener
                * speculator
                * containerLauncher #LocalContainerLauncher or ContainerLauncherImpl
-            * startJobs() #发送JobStartEvent给当前Job.
+            * startJobs() #发送JobStartEvent给当前Job.
          
 ## 核心类之JobImpl. org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl
 * JobImpl has
