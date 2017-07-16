@@ -241,18 +241,19 @@ ReduceTaskAttempImpl extends TaskAttempImpl
 * MRAppMaster has
    * a Job memeber.
    * 
-* MRAppMaster:
+* MRAppMaster: MRAppMaster下的Job和Task的启动流程
    * main:
       * MRAppMaster appMaster =   new MRAppMaster(applicationAttemptId, containerId, nodeHostString, Integer.parseInt(nodePortString), Integer.parseInt(nodeHttpPortString), appSubmitTime);
       * initAndStartAppMaster(appMaster, conf, jobUserName);
          * appMaster.serviceInit
+            * JobEvent initJobEvent = new JobEvent(job.getID(), JobEventType.JOB_INIT);
+            * jobEventDispatcher.handle(initJobEvent); #同步地初始化JobImpl. 
          
 ## 核心类之JobImpl. org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl
 * JobImpl has
    * Set<TaskId> mapTasks 
    * Set<TaskId> reduceTasks
-
-
+   
 ## Reduce
 * Reduce任务的大致执行过程
     * 入口： run(JobConf job, final TaskUmbilicalProtocol umbilical) #会被YarnChild.main调用.
