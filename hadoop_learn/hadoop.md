@@ -248,7 +248,7 @@ ReduceTaskAttempImpl extends TaskAttempImpl
       * initAndStartAppMaster(appMaster, conf, jobUserName);
          * appMaster.serviceStart
             * JobEvent initJobEvent = new JobEvent(job.getID(), JobEventType.JOB_INIT);
-            * jobEventDispatcher.handle(initJobEvent); #同步地初始化JobImpl.
+            * jobEventDispatcher.handle(initJobEvent); #同步地初始化JobImpl.
             * super.serviceStart #CompositeService.serviceStart. 启动在serviceInit时注册的子Service
                * dispatcher
                * taskAttemptFinishingMonitor
