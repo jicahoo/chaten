@@ -2,6 +2,7 @@
 * http://data-flair.training/blogs/hadoop-features-design-principles-tutorial/
 * http://www.dataintegration.ninja/big-data-and-hadoop-features-and-core-architecture/
 * https://www.dezyre.com/article/hadoop-components-and-architecture-big-data-and-hadoop-training/114
+* https://hadoopecosystemtable.github.io/
 
 ## Contirbute to Hadoop
 * https://issues.apache.org/jira 注册了ASF的JIRA, 用QQ邮箱, 用LianWaiYuChanChan名字。
