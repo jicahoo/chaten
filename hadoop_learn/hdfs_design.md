@@ -1,6 +1,7 @@
 ## HDFS的设计
 * http://hadooptutorial.info/hdfs-design-concepts/
 * https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html
+* http://www.aosabook.org/en/hdfs.html
 
 ## HDFS设计假设
 * HDFS的设计目标不是一个通用的文件系统。它追求的是吞吐量而不是低延时。运行在HDFS上的应用程序只需要流式地访问应用的数据集。所以，有些地方不兼容POSIX标准。
@@ -11,4 +12,27 @@
 ## HDFS的设计目标
 * 在一个集群上存储大量数据，PB级别.
 * 可靠的存储数据，容错性: 当系统的一部分出现故障时，系统继续运行并提供服务的能力
-* 
+
+## HDFS的设计取舍中的舍
+* HDFS处理不了大量的小文件。因为文件系统的元信息都是Load到NameNode的内存中的。NameNode内存的大小有限，所以无法存储大量的小文件。
+* 文件一旦写入，就不能更新，只能进行**删除，追加(append), 读取**操作。
+
+## HDFS的基本架构概念: Block, NameNode, DataNode.
+### 块：HDFS是块结构的文件系统
+* 块的大小默认是128M.比一般文件系统大很多，那么，一个文件就会具有更少的块，因此，可以更快地访问到块上的数据。
+* 块式的设计可以存储超过一个磁盘或者单机容量大小的文件。把不同的块放在不同的机器上。
+* 数据冗余是以块为粒度来设计和实现的。以实现系统的容错性。
+### NameNode
+* 文件系统的元数据放在内容中，以提供更快的文件访问速度
+* FsImage? TODO 功能
+* EditLog? TODO 功能
+* NameNode的HA? 设计中的重点问题。
+### DataNode
+* DataNode负责存储块，响应客户端的读取请求，负责块的复制，定期向NameNode发HeartBeat表明自己还或者。
+* 是Master/Slaves架构下的Slaves?
+
+## 动态地看HDFS
+* 一个读请求是如何完成的？
+* 一个写请求是如何完成的？
+* 当NameNode宕机的时候，如何处理？
+* 当某个DataNode挂掉的时候，又如何处理？
